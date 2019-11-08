@@ -6,6 +6,7 @@
 /////////////////////////////////////////////////
 
 var request = function(url, method, postdata) {
+  
   this.url = url;
   this.method = method;
   this._postData = postdata;

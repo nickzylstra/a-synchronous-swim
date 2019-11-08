@@ -15,6 +15,10 @@ module.exports.initialize = (queue) => {
 module.exports.router = (req, res, next = ()=>{}) => {
   console.log('Serving request type ' + req.method + ' for url ' + req.url);
   res.writeHead(200, headers);
-  res.end();
+  let data = undefined;
+  if (req.method === "GET") {
+    data = "left";
+  }
+  res.end(data);
   next(); // invoke next() at the end of a request to help with testing!
 };
