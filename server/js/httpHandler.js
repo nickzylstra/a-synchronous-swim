@@ -17,7 +17,8 @@ module.exports.router = (req, res, next = ()=>{}) => {
   res.writeHead(200, headers);
 
   if (req.method === "GET") {
-    const move = 'left';
+    const moves = ['left', 'right', 'up', 'down'];
+    const move = moves[Math.floor(Math.random() * moves.length)];
     res.write(move);
   }
   res.end();
