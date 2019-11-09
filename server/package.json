@@ -5,7 +5,7 @@
   "scripts": {
     "start": "nodemon .",
     "server": "node .",
-    "test": "node_modules/jest/bin/jest.js spec"
+    "test": "node_modules/jest/bin/jest.js spec --verbose"
   },
   "author": "",
   "license": "ISC",

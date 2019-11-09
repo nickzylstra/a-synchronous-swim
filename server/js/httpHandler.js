@@ -8,6 +8,7 @@ const messages = require('./messageQueue');
 module.exports.backgroundImageFile = path.join('.', 'background.jpg');
 ////////////////////////////////////////////////////////
 
+// WHAT IS THIS???
 let messageQueue = null;
 module.exports.initialize = (queue) => {
   messageQueue = queue;
@@ -15,16 +16,28 @@ module.exports.initialize = (queue) => {
 
 module.exports.router = (req, res, next = ()=>{}) => {
   console.log('Serving request type ' + req.method + ' for url ' + req.url);
-  res.writeHead(200, headers);
 
-  if (req.method === "GET") {
-    const moves = ['left', 'right', 'up', 'down'];
-    const randMove = moves[Math.floor(Math.random() * moves.length)];
+  if (req.url === '/') {
+    res.writeHead(200, headers);
 
-    let move = messages.dequeue();
-    move = move ? move : randMove;
+    if (req.method === "GET") {
+      // move into conditional logic on 26
+      const moves = ['left', 'right', 'up', 'down'];
+      const randMove = moves[Math.floor(Math.random() * moves.length)];
 
-    res.write(move);
+      let move = messages.dequeue();
+      move = move ? move : randMove;
+
+      res.write(move);
+    }
+  } else if (req.url === '/background') {
+    if (req.method === "GET") {
+      if (fs.existsSync(path.join('.', 'background.jpg'))) {
+
+      } else {
+        res.writeHead(404, headers);
+      }
+    }
   }
 
   res.end();
