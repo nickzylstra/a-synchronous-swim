@@ -25,11 +25,12 @@ describe('server responses', () => {
     // write your test here
     //Note: see flow -sona
     let {req, res} = server.mock('/', 'GET');
+    const moves = ['left', 'right', 'up', 'down'];
 
     httpHandler.router(req, res);
     expect(res._responseCode).to.equal(200);
     expect(res._ended).to.equal(true);
-    expect(res._data.toString()).to.not.be.empty;
+    expect(moves.includes(res._data.toString())).to.equal(true);
 
 
     done();
