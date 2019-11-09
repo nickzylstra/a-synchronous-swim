@@ -22,7 +22,7 @@
     });
   };
   // ajaxFetchCommand();
-  window.setInterval(ajaxFetchCommand, 1000);
+  window.setInterval(ajaxFetchCommand, 2000);
 
   /////////////////////////////////////////////////////////////////////
   // The ajax file uplaoder is provided for your convenience!
@@ -34,7 +34,7 @@
     $.ajax({
       type: 'POST',
       data: formData,
-      url: '/background',
+      url: 'background.jpg',
       cache: false,
       contentType: false,
       processData: false,

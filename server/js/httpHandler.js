@@ -18,9 +18,11 @@ module.exports.initialize = (queue) => {
 
 module.exports.router = (req, res, next = ()=>{}) => {
   console.log('Serving request type ' + req.method + ' for url ' + req.url);
-
-  if (fs.existsSync(req.url)) {
-    if (req.url === '/') {
+  // only works with files at root aka /
+  const url = path.basename(req.url) || '/';
+  // console.log(url);
+  if (fs.existsSync(url)) {
+    if (url === '/') {
       res.writeHead(200, headers);
 
       if (req.method === "GET") {
@@ -35,24 +37,19 @@ module.exports.router = (req, res, next = ()=>{}) => {
       }
 
       res.end();
-    } else if (req.url === 'background.jpg') {
+    } else if (url === 'background.jpg') {
       res.writeHead(200, headers);
 
       if (req.method === "GET") {
-        // fs.readFile(path.join('.', 'background.jpg'), (err, data) => {
-        //   if (err) {
-        //     res.writeHead(404, headers);
-        //     console.log('background.jpg not found');
-        //   } else {
-        //     res.writeHead(200, headers);
-        //     res.write(data);
-        //   }
-        // })
-        res.end();
+        const image = fs.readFileSync(path.join('.', url));
+        res.write(image);
       }
+
+      res.end();
     }
   } else {
     res.writeHead(404, headers);
+    console.log(`url ${url} not found`);
     res.end();
   }
 
