@@ -22,7 +22,7 @@
     });
   };
   // ajaxFetchCommand();
-  window.setInterval(ajaxFetchCommand, 200);
+  window.setInterval(ajaxFetchCommand, 1000);
 
   /////////////////////////////////////////////////////////////////////
   // The ajax file uplaoder is provided for your convenience!
