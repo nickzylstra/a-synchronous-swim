@@ -18,7 +18,7 @@ module.exports.initialize = (queue) => {
 
 module.exports.router = (req, res, next = ()=>{}) => {
   console.log('Serving request type ' + req.method + ' for url ' + req.url);
-  // only works with files at root aka /
+  // TODO only works with files at root aka /
   const url = path.basename(req.url) || '/';
   // console.log(url);
   if (fs.existsSync(url)) {
@@ -38,11 +38,17 @@ module.exports.router = (req, res, next = ()=>{}) => {
 
       res.end();
     } else if (url === 'background.jpg') {
-      res.writeHead(200, headers);
+      // TODO dynamically grab backgrountimagefile
 
       if (req.method === "GET") {
+        res.writeHead(200, headers);
         const image = fs.readFileSync(path.join('.', url));
         res.write(image);
+      }
+
+      if (req.method === "POST") {
+        res.writeHead(201, headers);
+
       }
 
       res.end();
