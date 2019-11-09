@@ -34,7 +34,7 @@
     $.ajax({
       type: 'POST',
       data: formData,
-      url: 'FILL_ME_IN',
+      url: '/background',
       cache: false,
       contentType: false,
       processData: false,
