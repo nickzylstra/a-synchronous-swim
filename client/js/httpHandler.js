@@ -6,11 +6,28 @@
   // TODO: build the swim command fetcher here
   //
 
+  const ajaxFetchCommand = () => {
+    $.ajax({
+      type: 'GET',
+      // data: formData,
+      url: serverUrl,
+      // cache: false,
+      // contentType: false,
+      // processData: false,
+      success: (data) => {
+        console.log("Ajax Fetch Command Successful");
+        console.log(data);
+        SwimTeam.move(data);
+      }
+    });
+  };
+  // ajaxFetchCommand();
+  window.setInterval(ajaxFetchCommand, 200);
+
   /////////////////////////////////////////////////////////////////////
   // The ajax file uplaoder is provided for your convenience!
   // Note: remember to fix the URL below.
   /////////////////////////////////////////////////////////////////////
-
   const ajaxFileUplaod = (file) => {
     var formData = new FormData();
     formData.append('file', file);
