@@ -30,16 +30,28 @@ module.exports.router = (req, res, next = ()=>{}) => {
 
       res.write(move);
     }
+
+    res.end();
   } else if (req.url === '/background') {
     if (req.method === "GET") {
-      if (fs.existsSync(path.join('.', 'background.jpg'))) {
+      // if (fs.existsSync(path.join('.', 'background.jpg'))) {
+      //   res.writeHead(200, headers);
+      // } else {
+      //   res.writeHead(404, headers);
+      // }
+      fs.readFile(path.join('.', 'background.jpg'), (err, data) => {
+        if (err) {
+          res.writeHead(404, headers);
+        } else {
+          res.writeHead(200, headers);
+          res.write(data);
+        }
 
-      } else {
-        res.writeHead(404, headers);
-      }
+        res.end();
+      })
     }
   }
 
-  res.end();
+
   next(); // invoke next() at the end of a request to help with testing!
 };
