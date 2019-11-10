@@ -79,7 +79,7 @@ describe('server responses', () => {
       let post = server.mock('/spec/temp.jpg', 'POST', fileData);
 
       httpHandler.router(post.req, post.res, () => {
-        let get = server.mock(path.join('/', '/spec/temp.jpg'), 'GET');
+        let get = server.mock('/spec/temp.jpg', 'GET');
         httpHandler.router(get.req, get.res, () => {
           expect(Buffer.compare(fileData, get.res._data)).to.equal(0);
           done();

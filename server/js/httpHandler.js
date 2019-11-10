@@ -16,7 +16,7 @@ module.exports.initialize = (queue) => {
   messageQueue = queue;
 };
 
-module.exports.router = ({url, method}, res, next = ()=>{}) => {
+module.exports.router = ({url, method, addListener}, res, next = ()=>{}) => {
   console.log('Serving request type ' + method + ' for url ' + url);
   // const dir = path.dirname(url);
   // const filename = path.basename(url);
@@ -46,6 +46,7 @@ module.exports.router = ({url, method}, res, next = ()=>{}) => {
     if (method === "GET") {
       if (fs.existsSync(url.slice(1))) {
         res.writeHead(200, headers);
+        // can this be done async?
         const image = fs.readFileSync(path.join('.', url));
         res.write(image);
         res.end();
@@ -58,6 +59,16 @@ module.exports.router = ({url, method}, res, next = ()=>{}) => {
 
     if (method === "POST") {
       res.writeHead(201, headers);
+
+      let imageBuffer;
+      addListener('data', (data) => {
+        imageBuffer = data;
+      });
+
+      // can this be done async?
+      const fd = fs.openSync(module.exports.backgroundImageFile, 'w+');
+      fs.writeSync(fd, imageBuffer);
+
       res.end();
     }
 
