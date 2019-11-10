@@ -16,16 +16,25 @@ module.exports.initialize = (queue) => {
   messageQueue = queue;
 };
 
-module.exports.router = (req, res, next = ()=>{}) => {
-  console.log('Serving request type ' + req.method + ' for url ' + req.url);
+module.exports.router = ({url, method}, res, next = ()=>{}) => {
+  console.log('Serving request type ' + method + ' for url ' + url);
   // TODO only works with files at root aka /
-  const url = path.basename(req.url) || '/';
+  // const dir = path.dirname(url);
+  // const filename = path.basename(url);
+  // const localPath = ? : ;
+  // console.log(`dir '${dir}' and filename '${filename}'`);
+  // url = path.basename(url) || '/';
   // console.log(url);
-  if (fs.existsSync(url)) {
+  // console.log(path.join('/', module.exports.backgroundImageFile));
+  if (url === '/' || fs.existsSync(url.slice(1))) {
     if (url === '/') {
-      res.writeHead(200, headers);
+      if (method === 'OPTIONS') {
+        res.writeHead(200, headers);
+        res.end();
+      }
 
-      if (req.method === "GET") {
+      if (method === "GET") {
+        res.writeHead(200, headers);
         // move into conditional logic on 26
         const moves = ['left', 'right', 'up', 'down'];
         const randMove = moves[Math.floor(Math.random() * moves.length)];
@@ -34,28 +43,30 @@ module.exports.router = (req, res, next = ()=>{}) => {
         move = move ? move : randMove;
 
         res.write(move);
+        res.end();
       }
-
-      res.end();
-    } else if (url === 'background.jpg') {
-      // TODO dynamically grab backgrountimagefile
-
-      if (req.method === "GET") {
+    } else if (url === path.join('/', module.exports.backgroundImageFile)) {
+      console.log('looking for background');
+      if (method === "GET") {
         res.writeHead(200, headers);
         const image = fs.readFileSync(path.join('.', url));
+        console.log('background served')
         res.write(image);
+        res.end();
       }
 
-      if (req.method === "POST") {
+      if (method === "POST") {
         res.writeHead(201, headers);
-
+        res.end();
       }
-
+    } else {
+      res.writeHead(500, headers);
+      console.log(`server error for url "${url}"`);
       res.end();
     }
   } else {
     res.writeHead(404, headers);
-    console.log(`url ${url} not found`);
+    console.log(`url "${url}" not found`);
     res.end();
   }
 
