@@ -60,8 +60,8 @@ module.exports.router = ({url, method, addListener}, res, next = ()=>{}) => {
     if (method === "POST") {
       res.writeHead(201, headers);
 
-      let imageBuffer;
-      addListener('data', (data) => {
+      let imageBuffer = new Buffer.alloc(0);
+      on('data', (data) => {
         imageBuffer = data;
       });
 
