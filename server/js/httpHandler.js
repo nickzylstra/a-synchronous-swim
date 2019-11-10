@@ -31,14 +31,14 @@ module.exports.router = ({url, method}, res, next = ()=>{}) => {
 
     if (method === "GET") {
       res.writeHead(200, headers);
-      // move into conditional logic on 26
-      const moves = ['left', 'right', 'up', 'down'];
-      const randMove = moves[Math.floor(Math.random() * moves.length)];
 
       let move = messages.dequeue();
-      move = move ? move : randMove;
-
+      if (!move) {
+        const moves = ['left', 'right', 'up', 'down'];
+        move = moves[Math.floor(Math.random() * moves.length)];
+      }
       res.write(move);
+
       res.end();
     }
 
